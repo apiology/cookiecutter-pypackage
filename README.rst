@@ -14,7 +14,8 @@ Hi!  I'm apiology_ and this is my fork of https://github.com/audreyr/cookiecutte
 
 Changes made to the original (see `GitHub view <https://github.com/audreyr/cookiecutter-pypackage/compare/master...apiology:fork_info?expand=1>`_):
 
-* Added note and new travis build icon  to top of README
+* Added note and new travis build icon to top of README
+* Make setup.py executable
 
 .. _apiology: https://github.com/apiology
 
