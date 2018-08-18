@@ -102,5 +102,5 @@ setup(
     zip_safe=False,
     cmdclass={
         'quality': QualityCommand,
-    ),
+    },
 )
