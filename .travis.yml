@@ -28,4 +28,4 @@ deploy:
   on:
     tags: true
     repo: audreyr/python_boilerplate
-    python: 3.8
+    python: 3.9
