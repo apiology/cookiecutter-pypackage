@@ -32,9 +32,14 @@ EOF
 }
 
 set_pyenv_env_variables() {
+  # looks like pyenv scripts aren't -u clean:
+  #
+  # https://app.circleci.com/pipelines/github/apiology/cookiecutter-pypackage/15/workflows/10506069-7662-46bd-b915-2992db3f795b/jobs/15
+  set +u
   export PATH="/home/circleci/.pyenv/bin:$PATH"
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
+  set -u
 }
 
 ensure_pyenv() {
