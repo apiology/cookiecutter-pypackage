@@ -16,8 +16,8 @@ install_pyenv() {
   then
     if type apt-get 2>/dev/null
     then
-      apt-get update -y
-      apt-get install -y pyenv
+      sudo apt-get update -y
+      sudo apt-get install -y pyenv
     else
       # this may be helpful:
       # https://askubuntu.com/questions/459402/how-to-know-if-the-running-platform-is-ubuntu-or-centos-with-help-of-a-bash-scri
