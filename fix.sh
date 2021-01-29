@@ -12,15 +12,40 @@ install_pyenv() {
   if [ "$(uname)" == "Darwin" ]
   then
     HOMEBREW_NO_AUTO_UPDATE=1 brew install pyenv || true
+    if ! type pyenv 2>/dev/null
+    then
+      # https://github.com/pyenv/pyenv-installer/blob/master/bin/pyenv-installer
+      2>&1 cat <<EOF
+WARNING: seems you still have not added 'pyenv' to the load path.
+
+# Load pyenv automatically by adding
+# the following to ~/.bashrc:
+
+export PATH="/home/circleci/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+EOF
+    fi
   else
     curl https://pyenv.run | bash
   fi
+}
+
+set_pyenv_env_variables() {
+  export PATH="/home/circleci/.pyenv/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 }
 
 ensure_pyenv() {
   if ! type pyenv 2>/dev/null
   then
     install_pyenv
+  fi
+
+  if ! type pyenv 2>/dev/null
+  then
+    set_pyenv_env_variables
   fi
 }
 
