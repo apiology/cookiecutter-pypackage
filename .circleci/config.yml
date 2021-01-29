@@ -3,7 +3,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: fkrull/multi-python:latest
+      - image: fkrull/multi-python
     steps:
       - checkout
       - run:
