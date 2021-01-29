@@ -38,7 +38,6 @@ set_pyenv_env_variables() {
   set +u
   export PATH="/home/circleci/.pyenv/bin:$PATH"
   eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
   set -u
 }
 
