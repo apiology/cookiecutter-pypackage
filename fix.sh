@@ -83,15 +83,3 @@ do
     pyenv install -s "${ver}"
   fi
 done
-
-# assumes you have an existing pyenv named mylibs where your global
-# stuff goes
-latest_python_version="$(cut -d' ' -f1 <<< "${python_versions}")"
-virtualenv_name="{{ cookiecutter.project_slug }}-${latest_python_version}"
-pyenv virtualenv "${latest_python_version}" "${virtualenv_name}" || true
-pyenv local "${virtualenv_name}" ${python_versions} mylibs
-# Make sure we have a pip with the 20.3 resolver, and after the
-# initial bugfix release
-pip install 'pip>=20.3.1'
-pip install -r requirements_dev.txt
-pip install -e .
