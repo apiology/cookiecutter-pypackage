@@ -8,6 +8,36 @@ latest_version() {
   pyenv install --list | grep "^  ${major_minor}." | grep -v -- -dev | tail -1 | xargs
 }
 
+install_pyenv() {
+  if [ "$(uname)" == "Darwin" ]
+  then
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install pyenv || true
+  elif [ "$(uname)" == "Linux" ]
+  then
+    if type apt-get 2>/dev/null
+    then
+      apt-get update -y
+      apt-get install -y pyenv
+    else
+      # this may be helpful:
+      # https://askubuntu.com/questions/459402/how-to-know-if-the-running-platform-is-ubuntu-or-centos-with-help-of-a-bash-scri
+      2>&1 echo "Please teach me about your distribution"
+    fi
+  else
+    2>&1 echo "Please teach me about your OS"
+    return 1
+  fi
+}
+
+ensure_pyenv() {
+  if ! type pyenv 2>/dev/null
+  then
+    install_pyenv
+  fi
+}
+
+ensure_pyenv
+
 # You can find out which feature versions are still supported / have
 # been release here: https://www.python.org/downloads/
 python_versions="$(latest_version 3.9) $(latest_version 3.8) $(latest_version 3.7) $(latest_version 3.6)"
