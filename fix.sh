@@ -43,12 +43,12 @@ set_pyenv_env_variables() {
 }
 
 ensure_pyenv() {
-  if ! type pyenv 2>/dev/null
+  if ! type pyenv >/dev/null 2>&1 && ! [ -f $HOME/.pyenv/bin/pyenv ]
   then
     install_pyenv
   fi
 
-  if ! type pyenv 2>/dev/null
+  if ! type pyenv >/dev/null 2>&1
   then
     set_pyenv_env_variables
   fi
