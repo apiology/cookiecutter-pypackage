@@ -38,6 +38,7 @@ set_pyenv_env_variables() {
   set +u
   export PATH="$HOME/.pyenv/bin:$PATH"
   eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
   set -u
 }
 
