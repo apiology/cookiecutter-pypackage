@@ -17,10 +17,10 @@ jobs:
             - "/home/circleci/.pyenv"
       - run:
           name: Set up pyenv
-          command:
-            - export PATH="$HOME/.pyenv/bin:$PATH"
-            - eval "$(pyenv init -)"
-            - eval "$(pyenv virtualenv-init -)"
+          command: |
+            export PATH="$HOME/.pyenv/bin:$PATH"
+            eval "$(pyenv init -)"
+            eval "$(pyenv virtualenv-init -)"
       - run:
           name: Test
           command: 'tox'
