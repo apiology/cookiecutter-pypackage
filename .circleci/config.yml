@@ -3,8 +3,11 @@ version: 2
 jobs:
   test:
     docker:
-      - image: fkrull/multi-python
+      - image: circleci/python
     steps:
+      - run:
+          name: Initialize packages
+          command: './fix.sh'
       - checkout
       - run:
           name: Test
