@@ -21,6 +21,8 @@ jobs:
             export PATH="$HOME/.pyenv/bin:$PATH"
             eval "$(pyenv init -)"
             eval "$(pyenv virtualenv-init -)"
+            echo "HOME is $HOME" # XXX
+            echo "PATH is $PATH" # XXX
             tox
           environment:
             # https://app.circleci.com/pipelines/github/apiology/cookiecutter-pypackage/4/workflows/29074dc8-944c-4600-8aaa-5116575fed90/jobs/4
