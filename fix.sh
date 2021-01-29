@@ -12,20 +12,8 @@ install_pyenv() {
   if [ "$(uname)" == "Darwin" ]
   then
     HOMEBREW_NO_AUTO_UPDATE=1 brew install pyenv || true
-  elif [ "$(uname)" == "Linux" ]
-  then
-    if type apt-get 2>/dev/null
-    then
-      sudo apt-get update -y
-      sudo apt-get install -y pyenv
-    else
-      # this may be helpful:
-      # https://askubuntu.com/questions/459402/how-to-know-if-the-running-platform-is-ubuntu-or-centos-with-help-of-a-bash-scri
-      2>&1 echo "Please teach me about your distribution"
-    fi
   else
-    2>&1 echo "Please teach me about your OS"
-    return 1
+    curl https://pyenv.run | bash
   fi
 }
 
