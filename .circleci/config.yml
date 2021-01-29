@@ -6,9 +6,15 @@ jobs:
       - image: circleci/python
     steps:
       - checkout
+      - restore_cache:
+          key: fix.sh-v1-{{ checksum "fix.sh" }}
       - run:
           name: Initialize packages
           command: './fix.sh'
+      - save_cache:
+          key: fix.sh-v1-{{ checksum "fix.sh" }}
+          paths:
+            - "/home/circleci/.pyenv"
       - run:
           name: Test
           command: 'tox'
