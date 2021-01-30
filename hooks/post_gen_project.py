@@ -28,4 +28,16 @@ if __name__ == '__main__':
     subprocess.check_call(['git', 'add', '-A'])
     subprocess.check_call(['git', 'commit', '-m',
                            'Initial commit from boilerplate'])
-    subprocess.check_call(['gh', '--whaevs'])
+    if 'none' != '{{ cookiecutter.type_of_github_repo }}':
+        if 'private' == '{{ cookiecutter.type_of_github_repo }}':
+            visibility_flag = '--private'
+        elif 'public' == '{{ cookiecutter.type_of_github_repo }}':
+            visibility_flag = '--public'
+        else:
+            raise RuntimeError('Invalid argument to '
+                               'cookiecutter.type_of_github_repo: '
+                               '{{ cookiecutter.type_of_github_repo }}')
+        subprocess.check_call(['gh', 'repo', 'create',
+                               visibility_flag,
+                               '{{ cookiecutter.github_username }}/'
+                               '{{ cookiecutter.project_slug }}'])
