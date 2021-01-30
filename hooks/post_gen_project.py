@@ -40,5 +40,7 @@ if __name__ == '__main__':
         subprocess.check_call(['gh', 'repo', 'create',
                                visibility_flag,
                                '-y',
+                               '--description',
+                               '{{ cookiecutter.project_short_description }}',
                                '{{ cookiecutter.github_username }}/'
                                '{{ cookiecutter.project_slug }}'])
