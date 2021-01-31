@@ -18,6 +18,9 @@
 PreCommit:
   PythonFlake8:
     enabled: true
+    exclude:
+      # Files are templated and not always valid Python as a result; these will be tested in CircleCI
+     - '{{cookiecutter.project_slug}}/**'
   ShellCheck:
     enabled: true
 #  RuboCop:

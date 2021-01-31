@@ -18,9 +18,9 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements: List[str] = [{%- if cookiecutter.command_line_interface|lower == 'click' %}'Click>=7.0',{%- endif %}]
+requirements: List[str] = [{%- if cookiecutter.command_line_interface|lower == 'click' %}'Click>=7.0'{%- endif %}]
 
-setup_requirements: List[str] = [{%- if cookiecutter.use_pytest == 'y' %}'pytest-runner',{%- endif %}]
+setup_requirements: List[str] = [{%- if cookiecutter.use_pytest == 'y' %}'pytest-runner'{%- endif %}]
 
 test_requirements: List[str] = [{%- if cookiecutter.use_pytest == 'y' %} 'pytest>=3' {%- endif %}]
 
