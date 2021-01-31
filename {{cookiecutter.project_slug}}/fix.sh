@@ -118,10 +118,6 @@ ensure_ruby_version
 
 ensure_bundle
 
-ensure_pyenv
-
-ensure_python_versions
-
 
 latest_python_version="$(cut -d' ' -f1 <<< "${python_versions}")"
 virtualenv_name="{{ cookiecutter.project_slug }}-${latest_python_version}"
