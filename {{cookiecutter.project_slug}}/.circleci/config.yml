@@ -7,20 +7,27 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: fix.sh-v1-{{ checksum "fix.sh" }}
+          {% raw %}key: fix.sh-v2-{{ checksum "fix.sh" }}{% endraw %}
       - run:
           name: Initialize packages
           command: './fix.sh'
       - save_cache:
-          key: fix.sh-v1-{{ checksum "fix.sh" }}
+          {% raw %}key: fix.sh-v2-{{ checksum "fix.sh" }}{% endraw %}
           paths:
             - "/home/circleci/.pyenv"
+            - "/home/circleci/.rbenv"
       - run:
           name: Test
           command: |
-            export PATH="$HOME/.pyenv/bin:$PATH"
+            export PATH="$HOME/.pyenv/bin:$HOME/.rbenv/bin:$PATH"
+            eval "$(rbenv init -)"
             eval "$(pyenv init -)"
             eval "$(pyenv virtualenv-init -)"
+
+            # Coax overcommit into working
+            git config --global user.email "fake@fake.fake"
+            git config --global user.name "Fake"
+            bundle exec overcommit --sign
 
             tox
           environment:
