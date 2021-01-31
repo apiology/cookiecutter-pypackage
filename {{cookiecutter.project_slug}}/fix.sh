@@ -62,6 +62,7 @@ ensure_rbenv() {
 
 ensure_ruby_version() {
   rbenv install -s "$(cat .ruby-version)"
+  rbenv rehash
 }
 
 ensure_bundle() {
