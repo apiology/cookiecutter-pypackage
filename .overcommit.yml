@@ -23,6 +23,7 @@ PreCommit:
      - '{{cookiecutter.project_slug}}/**/*.py'
   ShellCheck:
     enabled: true
+    onwarn: fail
 #  RuboCop:
 #    enabled: true
 #    on_warn: fail # Treat all warnings as failures
