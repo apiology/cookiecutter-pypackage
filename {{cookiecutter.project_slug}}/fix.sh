@@ -62,10 +62,14 @@ ensure_rbenv() {
 
 ensure_ruby_version() {
   rbenv install -s "$(cat .ruby-version)"
-  rbenv rehash
 }
 
 ensure_bundle() {
+  type gem || true
+  type ruby || true
+  echo $PATH
+  rbenv versions
+  rbenv version
   bundle --version >/dev/null 2>&1 || gem install bundler
   bundle install
 }
