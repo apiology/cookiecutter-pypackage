@@ -55,6 +55,14 @@ def check_output_inside_dir(command, dirpath):
         return subprocess.check_output(shlex.split(command))
 
 
+# TODO: Move back below
+def test_bake_and_run_quality(cookies):
+    with bake_in_temp_dir(cookies) as result:
+        assert result.project.isdir()
+        run_inside_dir('python setup.py quality', str(result.project)) == 0
+        print("test_bake_and_run_quality path", str(result.project))
+
+
 def test_year_compute_in_license_file(cookies):
     with bake_in_temp_dir(cookies) as result:
         license_file_path = result.project.join('LICENSE')
@@ -88,13 +96,6 @@ def test_bake_and_run_tests(cookies):
         assert result.project.isdir()
         run_inside_dir('python setup.py test', str(result.project)) == 0
         print("test_bake_and_run_tests path", str(result.project))
-
-
-def test_bake_and_run_quality(cookies):
-    with bake_in_temp_dir(cookies) as result:
-        assert result.project.isdir()
-        run_inside_dir('python setup.py quality', str(result.project)) == 0
-        print("test_bake_and_run_quality path", str(result.project))
 
 
 def test_bake_withspecialchars_and_run_tests(cookies):
