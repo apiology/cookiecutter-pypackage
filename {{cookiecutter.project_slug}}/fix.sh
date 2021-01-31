@@ -52,10 +52,7 @@ ensure_rbenv() {
     install_rbenv
   fi
 
-  if ! type rbenv >/dev/null 2>&1
-  then
-    set_rbenv_env_variables
-  fi
+  set_rbenv_env_variables
 
   ensure_ruby_build
 }
