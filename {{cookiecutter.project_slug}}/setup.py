@@ -72,27 +72,18 @@ class MypyCommand(Command):
 class QualityCommand(Command):
     quality_target: Optional[str]
 
-    description = 'Run quality gem on source code'
-    user_options = [
-        # The format is (long option, short option, description).
-        ('quality-target=',
-         None,
-         'particular quality tool to run (default: all)')
-    ]
+    description = 'Run quality tools on source code'
+    user_options: List[Tuple[str, Optional[str], str]] = []
 
     def initialize_options(self) -> None:
-        """Set default values for options."""
-        # Each user option must be listed here with their default value.
-        self.quality_target = None
+        pass
 
     def finalize_options(self) -> None:
         pass
 
     def run(self) -> None:
         """Run command."""
-        command = ['./quality.sh']
-        if self.quality_target:
-            command.append(self.quality_target)
+        command = ['overcommit', '--run']
         self.announce(
             'Running command: %s' % str(command),
             level=distutils.log.INFO)  # type: ignore
