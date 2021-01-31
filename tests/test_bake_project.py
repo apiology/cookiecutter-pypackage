@@ -59,6 +59,7 @@ def check_output_inside_dir(command, dirpath):
 def test_bake_and_run_quality(cookies):
     with bake_in_temp_dir(cookies) as result:
         assert result.project.isdir()
+        run_inside_dir('overcommit --sign', str(result.project)) == 0
         run_inside_dir('python setup.py quality', str(result.project)) == 0
         print("test_bake_and_run_quality path", str(result.project))
 
