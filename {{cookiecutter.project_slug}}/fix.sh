@@ -109,12 +109,31 @@ do
   fi
 done
 
+install_shellcheck() {
+  if [ "$(uname)" == "Darwin" ]
+  then
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install check || true
+  elif type apt-get >/dev/null 2>&1
+  then
+    sudo apt-get update -y
+    sudo apt-get install shellcheck
+  fi
+}
+
+ensure_shellcheck() {
+  if ! type shellcheck >/dev/null 2>&1
+  then
+    install_shellcheck
+  fi
+}
+
 ensure_rbenv
 
 ensure_ruby_version
 
 ensure_bundle
 
+ensure_shellcheck
 
 latest_python_version="$(cut -d' ' -f1 <<< "${python_versions}")"
 virtualenv_name="{{ cookiecutter.project_slug }}-${latest_python_version}"
