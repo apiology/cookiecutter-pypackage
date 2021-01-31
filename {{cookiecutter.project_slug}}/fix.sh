@@ -62,11 +62,6 @@ ensure_ruby_version() {
 }
 
 ensure_bundle() {
-  type gem || true
-  type ruby || true
-  echo $PATH
-  rbenv versions
-  rbenv version
   bundle --version >/dev/null 2>&1 || gem install bundler
   bundle install
 }
