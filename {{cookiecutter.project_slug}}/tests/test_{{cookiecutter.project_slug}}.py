@@ -57,7 +57,7 @@ optional arguments:
 """
     # older python versions show arguments like this:
     alt_expected_help = expected_help.replace('[_ ...]', '[_ [_ ...]]')
-    actual_help = subprocess.check_output(['{{ cookiecutter.project_slug }', '--help']).decode('utf-8')
+    actual_help = subprocess.check_output(['{{ cookiecutter.project_slug }}', '--help']).decode('utf-8')
     assert actual_help in [expected_help, alt_expected_help]
 {%- endif %}
 {%- else %}
