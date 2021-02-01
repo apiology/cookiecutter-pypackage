@@ -47,7 +47,7 @@ def test_command_line_interface():
     assert '--help  Show this message and exit.' in help_result.output
 {%- else %}
 def test_cli_help():
-    expected_help = b"""usage: op-env [-h] [_ ...]
+    expected_help = """usage: {{ cookiecutter.project_slug }} [-h] [_ ...]
 
 positional arguments:
   _
@@ -55,8 +55,10 @@ positional arguments:
 optional arguments:
   -h, --help  show this help message and exit
 """
-    actual_help = subprocess.check_output(['op-env', '--help'])
-    assert expected_help == actual_help
+    # older python versions show arguments like this:
+    alt_expected_help = expected_help.replace('[_ ...]', '[_ [_ ...]]')
+    actual_help = subprocess.check_output(['{{ cookiecutter.project_slug }', '--help']).decode('utf-8')
+    assert actual_help in [expected_help, alt_expected_help]
 {%- endif %}
 {%- else %}
 
