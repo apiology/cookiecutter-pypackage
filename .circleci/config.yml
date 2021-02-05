@@ -46,7 +46,7 @@ jobs:
     steps:
     #   - unless:
     #       condition:
-    #         - equal: [ main, << pipeline.git.branch >> ]
+    #         equal: [ main, << pipeline.git.branch >> ]
     #       steps:
     #          - tox:
     #              tox_arguments: '-e py39'
