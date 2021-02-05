@@ -44,7 +44,18 @@ jobs:
     docker:
       - image: circleci/python
     steps:
-      - tox
+      - when:
+          condition:
+            - not:
+                - equal: [ main, << pipeline.git.branch >> ]
+          steps:
+             - tox:
+                 tox_arguments: '-e py39'
+      - when:
+          condition:
+            - equal: [ main, << pipeline.git.branch >> ]
+          steps:
+             - tox # run all
 
 workflows:
   version: 2
