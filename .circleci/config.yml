@@ -43,13 +43,13 @@ jobs:
   test:
     docker:
       - image: circleci/python
-    steps:
-      - unless:
-          condition:
-            - equal: [ main, << pipeline.git.branch >> ]
-          steps:
-             - tox:
-                 tox_arguments: '-e py39'
+    # steps:
+    #   - unless:
+    #       condition:
+    #         - equal: [ main, << pipeline.git.branch >> ]
+    #       steps:
+    #          - tox:
+    #              tox_arguments: '-e py39'
       - when:
           condition:
             - equal: [ main, << pipeline.git.branch >> ]
