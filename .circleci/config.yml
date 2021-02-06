@@ -55,8 +55,7 @@ jobs:
           condition:
             equal: [ << pipeline.git.branch >>, "main" ]
           steps:
-            - tox:
-                tox_arguments: '' # run all
+            - tox
 
 workflows:
   version: 2
