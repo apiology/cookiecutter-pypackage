@@ -45,9 +45,6 @@ jobs:
     docker:
       - image: circleci/python
     steps:
-      - run:
-          name: Test TODO
-          command: echo hi
       - unless:
           condition:
             equal: [ << pipeline.git.branch >>, "main" ]
