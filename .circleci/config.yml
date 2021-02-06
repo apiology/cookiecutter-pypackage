@@ -51,11 +51,15 @@ jobs:
     #       steps:
     #          - tox:
     #              tox_arguments: '-e py39'
+      - run:
+          name: Test TODO
+          command: echo hi
       - when:
           condition:
-            equal: [main, << pipeline.git.branch >>]
+            equal: [ << pipeline.git.branch >>, "main" ]
           steps:
-            - tox  # run all
+            - tox:
+                tox_arguments: '' # run all
 
 workflows:
   version: 2
