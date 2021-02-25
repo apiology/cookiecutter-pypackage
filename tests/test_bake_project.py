@@ -91,10 +91,11 @@ def test_bake_and_run_build(cookies):
         extra_context={'full_name': 'name "quote" O\'connor'}
     ) as result:
         assert result.project.isdir()
-        run_inside_dir('overcommit --sign', str(result.project)) == 0
-        run_inside_dir('tox -e mypy', str(result.project)) == 0
-        run_inside_dir('tox -e py36', str(result.project)) == 0
-        run_inside_dir('tox -e quality', str(result.project)) == 0
+        assert run_inside_dir('overcommit --sign', str(result.project)) == 0
+        assert run_inside_dir('overcommit --sign pre-commit', str(result.project)) == 0
+        assert run_inside_dir('tox -e mypy', str(result.project)) == 0
+        assert run_inside_dir('tox -e py36', str(result.project)) == 0
+        assert run_inside_dir('tox -e quality', str(result.project)) == 0
         print("test_bake_and_run_build path", str(result.project))
 
 
