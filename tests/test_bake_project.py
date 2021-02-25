@@ -93,7 +93,7 @@ def test_bake_and_run_build(cookies):
         assert result.project.isdir()
         assert run_inside_dir('overcommit --sign', str(result.project)) == 0
         assert run_inside_dir('overcommit --sign pre-commit', str(result.project)) == 0
-        assert run_inside_dir('make mypy', str(result.project)) == 0
+        assert run_inside_dir('make typecheck', str(result.project)) == 0
         assert run_inside_dir('tox -e py36', str(result.project)) == 0
         assert run_inside_dir('make quality', str(result.project)) == 0
         print("test_bake_and_run_build path", str(result.project))
