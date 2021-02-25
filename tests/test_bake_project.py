@@ -33,6 +33,8 @@ def bake_in_temp_dir(cookies, *args, **kwargs):
         cookie to be baked and its temporal files will be removed
     """
     result = cookies.bake(*args, **kwargs)
+    assert result is not None
+    assert result.project is not None
     try:
         yield result
     finally:
@@ -125,7 +127,7 @@ def test_make_help(cookies):
                 'make help',
                 str(result.project)
             )
-            assert b"check code coverage quickly with the default Python" in \
+            assert b"run precommit quality checks" in \
                 output
 
 
