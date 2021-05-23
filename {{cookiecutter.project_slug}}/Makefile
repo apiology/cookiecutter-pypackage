@@ -30,7 +30,7 @@ default: typecheck test ## run default typechecking and tests
 typecheck: ## run mypy against project
 	dmypy --status-file /tmp/.dmypy.json stop || true
 	dmypy --status-file /tmp/.dmypy.json status || true
-	( cd && ( dmypy --status-file /tmp/.dmypy.json start || true ) )
+	dmypy --status-file /tmp/.dmypy.json start || true
 	pwd
 	ls -l
 	cat setup.py
