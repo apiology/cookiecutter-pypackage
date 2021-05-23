@@ -32,6 +32,7 @@ typecheck: ## run mypy against project
 	( cd && ( dmypy --status-file /tmp/.dmypy.json start || true ) )
 	pwd
 	ls -l
+	cat setup.py
 	dmypy --status-file /tmp/.dmypy.json run *.py tests {{cookiecutter.project_slug}}
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
