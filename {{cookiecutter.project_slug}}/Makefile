@@ -27,7 +27,7 @@ help:
 default: typecheck test ## run default typechecking and tests
 
 typecheck: ## run mypy against project
-	dmypy status
+	dmypy status || true
 	dmypy --status-file /tmp/.dmypy.json run *.py tests {{cookiecutter.project_slug}}
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
