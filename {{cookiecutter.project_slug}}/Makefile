@@ -28,7 +28,7 @@ default: typecheck test ## run default typechecking and tests
 
 typecheck: ## run mypy against project
 	dmypy status || true
-	( cd && dmypy start )
+	( cd && ( dmypy start || true ) )
 	pwd
 	dmypy --status-file /tmp/.dmypy.json run *.py tests {{cookiecutter.project_slug}}
 
