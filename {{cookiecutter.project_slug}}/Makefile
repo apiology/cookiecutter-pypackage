@@ -28,6 +28,7 @@ default: typecheck test ## run default typechecking and tests
 
 # https://app.circleci.com/pipelines/github/apiology/cookiecutter-pypackage/281/workflows/b85985a9-16d0-42c4-93d4-f965a111e090/jobs/366
 typecheck: ## run mypy against project
+	dmypy --status-file /tmp/.dmypy.json stop || true
 	dmypy --status-file /tmp/.dmypy.json status || true
 	( cd && ( dmypy --status-file /tmp/.dmypy.json start || true ) )
 	pwd
