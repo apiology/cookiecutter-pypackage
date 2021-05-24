@@ -28,13 +28,8 @@ default: typecheck test ## run default typechecking and tests
 
 # https://app.circleci.com/pipelines/github/apiology/cookiecutter-pypackage/281/workflows/b85985a9-16d0-42c4-93d4-f965a111e090/jobs/366
 typecheck: ## run mypy against project
-	dmypy --status-file /tmp/.dmypy.json stop || true
-	dmypy --status-file /tmp/.dmypy.json status || true
-	dmypy --status-file /tmp/.dmypy.json start || true
-	pwd
-	ls -l
-	cat setup.py
-	dmypy --status-file /tmp/.dmypy.json run *.py tests {{cookiecutter.project_slug}}
+	dmypy start --timeout 300 || true
+	dmypy run *.py tests {{cookiecutter.project_slug}}
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
