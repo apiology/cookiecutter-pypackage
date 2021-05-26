@@ -41,6 +41,7 @@ test_requirements: List[str] = ['pytest>=3']
     'GNU General Public License v3': 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
 } %}
 
+
 # From https://github.com/bluelabsio/records-mover/blob/master/setup.py
 class CoverageRatchetCommand(Command):
     description = 'Run coverage ratchet'
