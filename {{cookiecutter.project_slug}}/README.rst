@@ -27,7 +27,7 @@ WARNING: This is not ready for use yet!
 Features
 --------
 
-* TODO
+* (fill this in)
 
 Credits
 -------
