@@ -124,17 +124,8 @@ ensure_ruby_versions() {
 
   for ver in $ruby_versions
   do
-    # These CFLAGS can be retired once 2.6.7 is no longer needed :
-    #
-    # https://github.com/rbenv/ruby-build/issues/1747
-    # https://github.com/rbenv/ruby-build/issues/1489
-    # https://bugs.ruby-lang.org/issues/17777
-    if [ "${ver}" == 2.6.7 ]
-    then
-      CFLAGS="-Wno-error=implicit-function-declaration" rbenv install -s "${ver}"
-    else
-      rbenv install -s "${ver}"
-    fi
+    rbenv install -s "${ver}"
+    hash -r  # ensure we are seeing latest bundler etc
   done
 }
 
@@ -152,10 +143,9 @@ ensure_bundle() {
   #
   # https://app.asana.com/0/1107901397356088/1199504270687298
 
-  # Version 2.2.22 of bundler comes with a fix to ensure the 'bundle
-  # update --conservative' flag works as expected - important when
-  # doing a 'bundle update' on a about-to-be-published gem after
-  # bumping a gem version.
+  # Version <2.2.22 of bundler isn't compatible with Ruby 3.3:
+  #
+  # https://stackoverflow.com/questions/70800753/rails-calling-didyoumeanspell-checkers-mergeerror-name-spell-checker-h
   need_better_bundler=false
   if [ "${bundler_version_major}" -lt 2 ]
   then
@@ -167,7 +157,7 @@ ensure_bundle() {
       need_better_bundler=true
     elif [ "${bundler_version_minor}" -eq 2 ]
     then
-      if [ "${bundler_version_patch}" -lt 22 ]
+      if [ "${bundler_version_patch}" -lt 23 ]
       then
         need_better_bundler=true
       fi
@@ -175,7 +165,11 @@ ensure_bundle() {
   fi
   if [ "${need_better_bundler}" = true ]
   then
-    gem install --no-document bundler
+    # need to do this first before 'bundle update --bundler' will work
+    make bundle_install
+    bundle update --bundler
+    # ensure next step installs fresh bundle
+    rm -f Gemfile.lock.installed
   fi
   make bundle_install
   # https://bundler.io/v2.0/bundle_lock.html#SUPPORTING-OTHER-PLATFORMS
@@ -259,7 +253,26 @@ install_package() {
   apt_package=${2:-${homebrew_package}}
   if [ "$(uname)" == "Darwin" ]
   then
-    HOMEBREW_NO_AUTO_UPDATE=1 brew install "${homebrew_package}"
+    HOMEBREW_NO_AUTO_UPDATE=1 HOMEBREW_NO_INSTALL_UPGRADE=1 brew install "${homebrew_package}"
+  elif type apt-get >/dev/null 2>&1
+  then
+    if ! dpkg -s "${apt_package}" >/dev/null
+    then
+      update_apt
+      sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "${apt_package}"
+    fi
+  else
+    >&2 echo "Teach me how to install packages on this plaform"
+    exit 1
+  fi
+}
+
+update_package() {
+  homebrew_package=${1:?homebrew package}
+  apt_package=${2:-${homebrew_package}}
+  if [ "$(uname)" == "Darwin" ]
+  then
+    brew install "${homebrew_package}"
   elif type apt-get >/dev/null 2>&1
   then
     update_apt
@@ -285,7 +298,7 @@ ensure_python_build_requirements() {
 ensure_python_versions() {
   # You can find out which feature versions are still supported / have
   # been release here: https://www.python.org/downloads/
-  python_versions="$(latest_python_version 3.11) $(latest_python_version 3.10) $(latest_python_version 3.9) $(latest_python_version 3.8) $(latest_python_version 3.7)"
+  python_versions="$(latest_python_version 3.12) $(latest_python_version 3.11) $(latest_python_version 3.10) $(latest_python_version 3.9) $(latest_python_version 3.8)"
 
   echo "Latest Python versions: ${python_versions}"
 
