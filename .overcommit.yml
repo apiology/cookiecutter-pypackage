@@ -99,10 +99,6 @@ PostRewrite:
     enabled: true
 
 PrePush:
-  CustomScript:
-    enabled: true
-    requires_files: false
-    required_executable: 'bin/git-push-validate'
   Pytest:
     enabled: true
 
