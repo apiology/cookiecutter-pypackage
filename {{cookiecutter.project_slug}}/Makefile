@@ -151,6 +151,17 @@ dist: clean ## builds source and wheel package
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
 
+update_apt: .make/apt_updated
+
+.make/apt_updated:
+	sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
+	touch .make/apt_updated
+
+types.installed: Gemfile.lock Gemfile.lock.installed ## Ensure typechecking dependencies are in place
+	touch types.installed
+
+build-typecheck: types.installed ## Fetch information that type checking depends on
+
 update_from_cookiecutter: ## Bring in changes from template project used to create this repo
 	bundle exec overcommit --uninstall
 	cookiecutter_project_upgrader --help >/dev/null
