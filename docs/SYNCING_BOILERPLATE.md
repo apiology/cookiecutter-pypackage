@@ -78,13 +78,7 @@ Record the reference repo’s `origin/main` SHA in the PR (omit the private repo
 
 If this template still contains a nested `{{cookiecutter.project_slug}}//` tree (generator meta-pattern), propagate shared boilerplate there only when that nested tree is the **same** tier. Do not blindly duplicate `.cursor/` into nested paths when the nested template is a different hierarchy level.
 
-## Cursor rules and skills
-
-- **Authoring policy:** `~/.cursor/rules/cursor-rule-authoring.mdc` (global only).
-- **This repo:** `.cursor/rules/boilerplate-sync.mdc`, `template-hierarchy.mdc`, `overcommit-signing.mdc`.
-- **Skill (in repo):** `.cursor/skills/apiology-boilerplate-sync/`.
-
-Propagate skill and rule changes to sibling cookiecutter templates with `make update_from_cookiecutter` (or merge from the ancestor template’s `cookiecutter-template` branch).
+Propagate doc changes to sibling cookiecutter templates with `make update_from_cookiecutter` (or merge from the ancestor template’s `cookiecutter-template` branch).
 
 ## Checklist
 
