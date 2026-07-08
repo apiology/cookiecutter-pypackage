@@ -163,8 +163,8 @@ jobs:
                   git config --global user.email "test@test.test"
                   git config --global user.name "Test Test"
                   # Coax overcommit into working
-                  bundle exec overcommit --sign
-                  bundle exec overcommit --sign pre-commit
+                  bin/overcommit --sign
+                  bin/overcommit --sign pre-commit
 
                   # Set timezone as same on dev box for test consistency
 
