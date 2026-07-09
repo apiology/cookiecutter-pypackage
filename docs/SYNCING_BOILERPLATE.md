@@ -38,7 +38,7 @@ Adjust for **this** tier — a reference repo may include more than you should p
 - `.circleci/config.yml`
 - `.envrc`, `.yamllint.yml`, `.gitattributes`, `.dockerignore`
 - `.git-hooks/pre_commit/circle_ci.rb`, `.git-hooks/pre_commit/punchlist.rb` (maintenance only)
-- `.cursor/rules/`, `.cursor/skills/`, this doc
+- `.cursor/rules/`, this doc
 - `DEVELOPMENT.md` (agent/conventions sections)
 - `CODE_OF_CONDUCT.md`, `.mdlrc`, `package.json` (usually unchanged)
 
