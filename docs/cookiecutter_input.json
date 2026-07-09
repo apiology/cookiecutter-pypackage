@@ -1,5 +1,5 @@
 {
-    "_checkout": null,
+    "_checkout": "main",
     "_output_dir": "/Users/broz/.cursor/worktrees/cookiecutter-pypackage/cascade-cookiecutter-pypackage-1783508825597/.git/cookiecutter",
     "_repo_dir": "/Users/broz/.cookiecutters/cookiecutter-cookiecutter",
     "_template": "https://github.com/apiology/cookiecutter-cookiecutter",
