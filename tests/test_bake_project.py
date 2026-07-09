@@ -11,9 +11,9 @@ import jinja2
 
 @contextmanager
 def inside_dir(dirpath):
-    """
-    Execute code from inside the given directory
-    :param dirpath: String, path of the directory the command is being run.
+    """Execute code from inside the given directory.
+
+    :param dirpath: Path of the directory the command is being run in.
     """
     old_path = os.getcwd()
     try:
@@ -24,37 +24,38 @@ def inside_dir(dirpath):
 
 
 @contextmanager
-def suppressed_hook_items(skip_github_and_circleci_creation=True,
-                          skip_fix_script=False):
-    """A context manager which sets an env variable to suppress different
-    hook items
+def suppressed_hook_items(skip_external=True, skip_fix_script=False):
+    """Suppress external hook actions during tests.
 
+    :param skip_external: Set SKIP_EXTERNAL to skip GitHub/CircleCI creation.
+    :param skip_fix_script: Set SKIP_FIX_SCRIPT to skip fix.sh during bake.
     """
-    os.environ['SKIP_GITHUB_AND_CIRCLECI_CREATION'] =\
-        '1' if skip_github_and_circleci_creation else '0'
+    os.environ['SKIP_EXTERNAL'] = '1' if skip_external else '0'
     os.environ['SKIP_FIX_SCRIPT'] = '1' if skip_fix_script else '0'
     try:
         yield
     finally:
-        del os.environ['SKIP_GITHUB_AND_CIRCLECI_CREATION']
+        del os.environ['SKIP_EXTERNAL']
         del os.environ['SKIP_FIX_SCRIPT']
 
 
 def errmsg(exception):
+    """Format a cookiecutter or Jinja exception for assertion messages."""
     if isinstance(exception, jinja2.exceptions.TemplateSyntaxError):
-        return f"Found error at {exception.filename}:{exception.lineno}"
-    else:
-        return str(exception)
+        return f'Found error at {exception.filename}:{exception.lineno}'
+    return str(exception)
 
 
 @contextmanager
 def bake_in_temp_dir(cookies, skip_fix_script=False, *args, **kwargs):
+    """Bake a cookiecutter in a temporary directory.
+
+    :param cookies: pytest_cookies.Cookies instance.
+    :param skip_fix_script: Skip fix.sh during bake when True.
+    :param args: Positional arguments passed to cookies.bake.
+    :param kwargs: Keyword arguments passed to cookies.bake.
     """
-    Delete the temporal directory that is created when executing the tests
-    :param cookies: pytest_cookies.Cookies,
-        cookie to be baked and its temporal files will be removed
-    """
-    with suppressed_hook_items(skip_github_and_circleci_creation=True,
+    with suppressed_hook_items(skip_external=True,
                                skip_fix_script=skip_fix_script):
         result = cookies.bake(*args, **kwargs)
         assert result is not None, result
@@ -64,27 +65,32 @@ def bake_in_temp_dir(cookies, skip_fix_script=False, *args, **kwargs):
     try:
         yield result
     finally:
-        rmtree(str(result.project_path))
+        if '--keep-baked-projects' not in sys.argv:
+            rmtree(str(result.project_path))
 
 
 def run_inside_dir(command, dirpath):
-    """
-    Run a command from inside a given directory, returning the exit status
-    :param command: Command that will be executed
-    :param dirpath: String, path of the directory the command is being run.
+    """Run a command inside a directory and return the exit status.
+
+    :param command: Command to execute.
+    :param dirpath: Working directory for the command.
     """
     with inside_dir(dirpath):
         return subprocess.check_call(shlex.split(command))
 
 
 def check_output_inside_dir(command, dirpath):
-    "Run a command from inside a given directory, returning the command output"
+    """Run a command inside a directory and return command output.
+
+    :param command: Command to execute.
+    :param dirpath: Working directory for the command.
+    """
     with inside_dir(dirpath):
         return subprocess.check_output(shlex.split(command))
 
 
 def project_info(result):
-    """Get toplevel dir, project_slug, and project dir from baked cookies"""
+    """Return toplevel dir, project_slug, and project dir from baked cookies."""
     project_path = str(result.project_path)
     project_slug = os.path.split(project_path)[-1]
     project_dir = os.path.join(project_path, result.context['package_name'])
@@ -92,7 +98,13 @@ def project_info(result):
 
 
 def test_bake_and_run_build(cookies):
-    with bake_in_temp_dir(cookies) as result:
+    """Bake the template and run make test, typecheck, and quality."""
+    with bake_in_temp_dir(cookies,
+                          extra_context={
+                              'full_name': 'name "quote" O\'connor',
+                              'project_short_description':
+                              'The greatest project ever created by name "quote" O\'connor.',
+                          }) as result:
         assert result.project_path.is_dir()
         assert result.exit_code == 0
         assert result.exception is None
@@ -110,17 +122,17 @@ def test_bake_and_run_build(cookies):
         assert run_inside_dir('make coverage', str(result.project_path)) == 0
         assert run_inside_dir('make quality', str(result.project_path)) == 0
         # The supplied Makefile does not support win32
-        if sys.platform != "win32":
+        if sys.platform != 'win32':
             output = check_output_inside_dir(
                 'make help',
                 str(result.project_path)
             )
-            assert b"run precommit quality checks" in \
+            assert b'run precommit quality checks' in \
                 output
         license_file_path = result.project_path / 'LICENSE'
         now = datetime.datetime.now()
         assert str(now.year) in license_file_path.open().read()
-        print("test_bake_and_run_build path", str(result.project_path))
+        print('test_bake_and_run_build path', str(result.project_path))
 
 
 TRICKY_QUOTE_CHARACTERS_CONTEXT = {
@@ -155,8 +167,8 @@ def test_bake_without_author_file(cookies):
 def test_bake_selecting_license(cookies):
     license_strings = {
         'MIT license': 'MIT ',
-        'BSD license': 'Redistributions of source code must retain the ' +
-                       'above copyright notice, this',
+        'BSD license': ('Redistributions of source code must retain the '
+                        'above copyright notice, this'),
         'ISC license': 'ISC License',
         'Apache Software License 2.0':
             'Licensed under the Apache License, Version 2.0',
