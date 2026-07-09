@@ -73,6 +73,10 @@ PreCommit:
     problem_on_unmodified_line: warn
     quiet: false
 
+PostCheckout:
+  BundleInstall:
+    enabled: true
+
 PostCommit:
   BundleInstall:
     enabled: true
@@ -84,12 +88,6 @@ PostMerge:
 PostRewrite:
   BundleInstall:
     enabled: true
-
-PrePush:
-  CustomScript:
-    enabled: true
-    requires_files: false
-    required_executable: 'bin/git-push-validate'
 
 #PostCheckout:
 #  ALL: # Special hook name that customizes all hooks of this type
